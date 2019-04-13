@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: Moon Flower Bold SDF
+  m_Name: Moon Flower Bold
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: -1898885006
   material: {fileID: 21745849931166606}
-  materialHashCode: 0
+  materialHashCode: -1734618439
   fontAssetType: 1
   m_fontInfo:
     Name: Moon Flower Bold
     PointSize: 72
-    Scale: 0
+    Scale: 1
     CharacterCount: 121
     LineHeight: 82.84375
     Baseline: 0
     Ascender: 60.34375
-    CapHeight: 0
+    CapHeight: 52.71875
     Descender: -14.6875
     CenterLine: 0
     SuperscriptOffset: 60.34375
@@ -34,7 +34,7 @@ MonoBehaviour:
     UnderlineThickness: 5.2734375
     strikethrough: 16.602272
     strikethroughThickness: 5.2734375
-    TabWidth: 0
+    TabWidth: 178.75
     Padding: 9
     AtlasWidth: 512
     AtlasHeight: 512
@@ -43,10 +43,10 @@ MonoBehaviour:
   - id: 32
     x: 10
     y: 521
-    width: 0
-    height: 0
+    width: 17.875
+    height: 75.03125
     xOffset: 0
-    yOffset: 0
+    yOffset: 60.34375
     xAdvance: 17.875
     scale: 1
   - id: 33
