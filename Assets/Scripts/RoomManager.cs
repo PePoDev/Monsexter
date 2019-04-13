@@ -2,6 +2,7 @@
 using Firebase.Database;
 using Firebase.Unity.Editor;
 using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -11,7 +12,7 @@ public class RoomManager : MonoBehaviour
     #region Variables
     [Header("Waiting UI")]
     [SerializeField] private TextMeshProUGUI WaitingUI_RoomTokenText;
-    [SerializeField] PlayerData[] players;
+    [SerializeField] private PlayerData[] players;
     [Space]
 
     [Header("Mode Select UI")]
@@ -19,10 +20,11 @@ public class RoomManager : MonoBehaviour
     [SerializeField] private TMP_InputField JoinUI_RoomNameText;
     #endregion
 
+    [Serializable]
     public struct PlayerData
     {
-        private Image ProfilePicture;
-        private TextMeshProUGUI Name;
+        public Image ProfilePicture;
+        public TextMeshProUGUI Name;
     }
 
     #region Core Method
@@ -31,6 +33,8 @@ public class RoomManager : MonoBehaviour
         WaitingUI_RoomTokenText.SetText(PlayerPrefs.GetString("RoomToken"));
 
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Config.FirebaseURL);
+        var roomReference = FirebaseDatabase.DefaultInstance.GetReference(PlayerPrefs.GetString("RoomToken"));
+
     }
     #endregion
 

@@ -1,7 +1,9 @@
 ﻿using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
+using System.Collections;
 using System.Threading;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,12 +31,18 @@ public class MenuManager : MonoBehaviour
     #region Utils Method
     public void CreateRoom()
     {
+        StartCoroutine(Creating());
+    }
+
+    private IEnumerator Creating()
+    {
         var roomToken = Utils.GetRandomToken();
         PlayerPrefs.SetString("RoomToken", roomToken);
         PlayerPrefs.SetString("PlayerName", CreateUI_PlayerNameText.text);
+        PlayerPrefs.SetInt("PlayerIndex", 1);
 
-        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
-        DatabaseReference roomReference = databaseReference.Child(roomToken);
+        var isFinish = false;
+        DatabaseReference roomReference = FirebaseDatabase.DefaultInstance.GetReference(roomToken);
         roomReference.Child("Player1").SetValueAsync(CreateUI_PlayerNameText.text).ContinueWith(task =>
         {
             if (task.IsCompleted)
@@ -43,68 +51,90 @@ public class MenuManager : MonoBehaviour
                 {
                     if (task2.IsCompleted)
                     {
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                        isFinish = true;
                     }
                 });
             }
         });
 
+        yield return new WaitUntil(() => isFinish);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void JoinRoom()
     {
+        StartCoroutine(Joining());
+    }
+    private IEnumerator Joining()
+    {
         PlayerPrefs.SetString("RoomToken", JoinUI_RoomNameText.text);
         PlayerPrefs.SetString("PlayerName", JoinUI_PlayerNameText.text);
 
-        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference.Child(JoinUI_RoomNameText.text);
+        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(JoinUI_RoomNameText.text);
+
+        var hasSeat = false;
+        var hasFinish = false;
+        var hasRoom = true;
+        var playerIndex = 0;
         databaseReference.Child("Status").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
                 if (task.Result.Exists == false)
                 {
-                    Debug.Log("Room not found !");
-                    return;
+                    hasRoom = false;
                 }
-
-                var readLock = new SemaphoreSlim(1, 1);
-                var hasSeat = false;
-                for (var i = 1; i <= Config.MaxPlayer + 1; i++)
+                else
                 {
-                    databaseReference.Child($"Player{i}").GetValueAsync().ContinueWith(async playerTask =>
+                    var readLock = new SemaphoreSlim(1, 1);
+                    for (var i = 1; i <= Config.MaxPlayer + 1; i++)
                     {
-                        if (playerTask.IsCompleted && playerTask.Result.Exists == false)
+                        databaseReference.Child($"Player{i}").GetValueAsync().ContinueWith(async playerTask =>
                         {
-                            await readLock.WaitAsync();
-                            try
+                            if (playerTask.IsCompleted && playerTask.Result.Exists == false)
                             {
-                                if (hasSeat == false && i != 7)
+                                await readLock.WaitAsync();
+                                try
                                 {
-                                    await databaseReference.Child($"Player{i}").SetValueAsync(JoinUI_PlayerNameText.text).ContinueWith(putTask =>
+                                    if (hasSeat == false && i != 7)
                                     {
-                                        if (putTask.IsCompleted)
+                                        await databaseReference.Child($"Player{i}").SetValueAsync(JoinUI_PlayerNameText.text).ContinueWith(putTask =>
                                         {
-                                            hasSeat = true;
-                                            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-                                        }
-                                    });
+                                            if (putTask.IsCompleted)
+                                            {
+                                                hasSeat = true;
+                                                playerIndex = i - 1;
+                                            }
+                                        });
+                                    }
+                                }
+                                finally
+                                {
+                                    readLock.Release();
                                 }
                             }
-                            finally
-                            {
-                                readLock.Release();
-                            }
-
-                        }
-                    }).Wait();
+                        }).Wait();
+                    }
                 }
-
-                if (hasSeat == false)
-                {
-                    Debug.Log("Room is fully");
-                }
+                hasFinish = true;
             }
         });
+
+        yield return new WaitUntil(() => hasFinish);
+
+        if (hasRoom == false)
+        {
+            Debug.Log("Room not found !");
+        }
+        else if (hasSeat == false)
+        {
+            Debug.Log("Room is full");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("PlayerIndex", playerIndex);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
     #endregion
 }
