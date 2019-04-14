@@ -14,11 +14,17 @@ public class RoomManager : MonoBehaviour
     [Header("Waiting UI")]
     [SerializeField] private TextMeshProUGUI WaitingUI_RoomTokenText;
     [SerializeField] private PlayerData[] players;
+
     [Space]
 
-    [Header("Mode Select UI")]
-    [SerializeField] private TMP_InputField JoinUI_PlayerNameText;
-    [SerializeField] private TMP_InputField JoinUI_RoomNameText;
+    [Header("Canvas Group")]
+    [SerializeField] private Canvas canvasWaiting;
+    [SerializeField] private Canvas canvasModeSelect;
+    [SerializeField] private Canvas canvasSpin;
+
+    private DatabaseReference roomReference;
+
+    private string roomToken;
     #endregion
 
     [Serializable]
@@ -31,21 +37,21 @@ public class RoomManager : MonoBehaviour
     #region Core Method
     private void Awake()
     {
+        roomToken = PlayerPrefs.GetString("RoomToken");
+        WaitingUI_RoomTokenText.SetText(roomToken);
+
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Config.FirebaseURL);
-        WaitingUI_RoomTokenText.SetText(PlayerPrefs.GetString("RoomToken"));
-        StartCoroutine(Initialization());
+        roomReference = FirebaseDatabase.DefaultInstance.GetReference(roomToken);
+
+        roomReference.ChildAdded += HandleChildAdded;
+        roomReference.ChildChanged += HandleChildChanged;
+        roomReference.ChildRemoved += HandleChildRemoved;
+
+        //StartCoroutine(Initialization());
     }
 
-    private void OnApplicationQuit()
+    private IEnumerator Initialization()
     {
-        var refDB = FirebaseDatabase.DefaultInstance.GetReference(PlayerPrefs.GetString("RoomToken"));
-        refDB.Child($"Player{PlayerPrefs.GetInt("PlayerIndex").ToString()}").RemoveValueAsync();
-    }
-
-    IEnumerator Initialization()
-    {
-        DatabaseReference roomReference = FirebaseDatabase.DefaultInstance.GetReference(PlayerPrefs.GetString("RoomToken"));
-
         var completeDataNumber = 0;
         var playersName = new string[6];
         for (var i = 1; i <= Config.MaxPlayer; i++)
@@ -57,21 +63,25 @@ public class RoomManager : MonoBehaviour
                 {
                     playersName[x - 1] = playerTask.Result.Value as string;
                 }
+                else
+                {
+                    playersName[x - 1] = "";
+                }
                 completeDataNumber++;
             });
         }
 
-        yield return new WaitUntil(()=> completeDataNumber == 6);
+        yield return new WaitUntil(() => completeDataNumber == 6);
 
         for (var i = 0; i < Config.MaxPlayer; i++)
         {
             players[i].Name.SetText(playersName[i]);
         }
+    }
 
-        roomReference.ChildAdded += HandleChildAdded;
-        roomReference.ChildChanged += HandleChildChanged;
-        roomReference.ChildRemoved += HandleChildRemoved;
-        roomReference.ChildMoved += HandleChildMoved;
+    private void OnApplicationQuit()
+    {
+        roomReference.Child($"Player{PlayerPrefs.GetInt("PlayerIndex").ToString()}").RemoveValueAsync();
     }
 
     private void HandleChildAdded(object sender, ChildChangedEventArgs args)
@@ -80,6 +90,12 @@ public class RoomManager : MonoBehaviour
         {
             Debug.LogError(args.DatabaseError.Message);
             return;
+        }
+
+        Debug.Log("Added: " + args.Snapshot.Key);
+        if (args.Snapshot.Key.Contains("Player"))
+        {
+            players[int.Parse(args.Snapshot.Key.TrimStart('P', 'l', 'a', 'y', 'e', 'r')) - 1].Name.SetText(args.Snapshot.Value.ToString());
         }
     }
 
@@ -90,6 +106,14 @@ public class RoomManager : MonoBehaviour
             Debug.LogError(args.DatabaseError.Message);
             return;
         }
+
+        Debug.Log("Changed: " + args.Snapshot.Key);
+        if (args.Snapshot.Key.Contains("Status") && !args.Snapshot.Value.ToString().Contains("Waiting"))
+        {
+            canvasWaiting.gameObject.SetActive(false);
+            canvasModeSelect.gameObject.SetActive(false);
+            canvasSpin.gameObject.SetActive(true);
+        }
     }
 
     private void HandleChildRemoved(object sender, ChildChangedEventArgs args)
@@ -99,24 +123,24 @@ public class RoomManager : MonoBehaviour
             Debug.LogError(args.DatabaseError.Message);
             return;
         }
-    }
 
-    private void HandleChildMoved(object sender, ChildChangedEventArgs args)
-    {
-        if (args.DatabaseError != null)
+        Debug.Log("Removed: " + args.Snapshot.Key);
+        if (args.Snapshot.Key.Contains("Player"))
         {
-            Debug.LogError(args.DatabaseError.Message);
-            return;
+            players[int.Parse(args.Snapshot.Key.TrimStart('P', 'l', 'a', 'y', 'e', 'r')) - 1].Name.SetText("");
         }
     }
     #endregion
 
     #region Utils Method
-
-
-    public void Enter()
+    public void SelectMode(int i)
     {
+        roomReference.Child("Status").SetValueAsync(i);
+    }
 
+    public void SpinRole()
+    {
+         
     }
     #endregion
 }
