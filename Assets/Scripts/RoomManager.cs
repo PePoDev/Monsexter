@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class RoomManager : MonoBehaviour
 {
@@ -14,7 +15,10 @@ public class RoomManager : MonoBehaviour
     [Header("Waiting UI")]
     [SerializeField] private TextMeshProUGUI WaitingUI_RoomTokenText;
     [SerializeField] private PlayerData[] players;
+    [Space]
 
+    [Header("Spin UI")]
+    [SerializeField] private Slider SpinUI_Slider;
     [Space]
 
     [Header("Canvas Group")]
@@ -138,9 +142,18 @@ public class RoomManager : MonoBehaviour
         roomReference.Child("Status").SetValueAsync(i);
     }
 
-    public void SpinRole()
+    public void Spinning()
     {
-         
+        SpinUI_Slider.value = 0;
+
+        if (SpinUI_Slider.value < 0.7f)
+        {
+            return;
+        }
+
+        SpinUI_Slider.enabled = false;
+
+
     }
     #endregion
 }
