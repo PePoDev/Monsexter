@@ -1,66 +1,84 @@
-﻿using Firebase;
+﻿using System;
+using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    #region Variables
-    [Header("Create UI")]
-    [SerializeField] private TMP_InputField CreateUI_PlayerNameText;
+	#region Variables
+	[SerializeField] private TextMeshProUGUI TimeText;
+	[SerializeField] private TextMeshProUGUI codeText;
+	[SerializeField] private Image[] ImageChoiceObj;
+	[SerializeField] private CharacterMode[] characterModesSprite;
 
-    [Space]
+	private DatabaseReference roomReference;
 
-    [Header("Join UI")]
-    [SerializeField] private TMP_InputField JoinUI_PlayerNameText;
-    [SerializeField] private TMP_InputField JoinUI_RoomNameText;
-    #endregion
+	private string roomToken;
 
-    #region Core Method
-    private void Awake()
-    {
-        FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://monsexter.firebaseio.com/");
-    }
-    #endregion
+	[Serializable]
+	public struct CharacterMode
+	{
+		[SerializeField] private Sprite[] characterChoice;
+	}
+	#endregion
 
-    #region Utils Method
-    public void CreateRoom()
-    {
-        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+	#region Core Method
+	private void Awake()
+	{
+		roomToken = PlayerPrefs.GetString("RoomToken");
 
-        var roomToken = Utils.GetRandomToken();
-        PlayerPrefs.SetString("RoomToken", roomToken);
+		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Config.FirebaseURL);
+		roomReference = FirebaseDatabase.DefaultInstance.GetReference(roomToken);
 
-        DatabaseReference roomReference = databaseReference.Child(roomToken);
-        roomReference.Child("Player1").SetValueAsync(CreateUI_PlayerNameText.text).ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                roomReference.Child("Status").SetValueAsync("Waiting").ContinueWith(task2 =>
-                {
-                    if (task2.IsCompleted)
-                    {
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-                    }
-                });
-            }
-        });
+		roomReference.ChildAdded += HandleChildAdded;
+		roomReference.ChildChanged += HandleChildChanged;
+		roomReference.ChildRemoved += HandleChildRemoved;
+	}
 
-    }
+	private void HandleChildAdded(object sender, ChildChangedEventArgs args)
+	{
+		if (args.DatabaseError != null)
+		{
+			Debug.LogError(args.DatabaseError.Message);
+			return;
+		}
 
-    public void JoinRoom()
-    {
-        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(JoinUI_RoomNameText.text);
-        databaseReference.Child("Status").GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                var snapshot = task.Result;
-            }
-        });
+	}
 
-    }
-    #endregion
+	private void HandleChildChanged(object sender, ChildChangedEventArgs args)
+	{
+		if (args.DatabaseError != null)
+		{
+			Debug.LogError(args.DatabaseError.Message);
+			return;
+		}
+
+	}
+
+	private void HandleChildRemoved(object sender, ChildChangedEventArgs args)
+	{
+		if (args.DatabaseError != null)
+		{
+			Debug.LogError(args.DatabaseError.Message);
+			return;
+		}
+
+	}
+	#endregion
+
+	#region Utils Method
+	public void EnterCode()
+	{
+
+	}
+
+	public void AddCode(string letter)
+	{
+		codeText.text += letter;
+	}
+	#endregion
 }
