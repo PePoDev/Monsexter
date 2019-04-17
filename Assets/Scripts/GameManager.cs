@@ -1,11 +1,12 @@
-﻿using System;
-using Firebase;
+﻿using Firebase;
 using Firebase.Database;
 using Firebase.Unity.Editor;
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,12 +18,13 @@ public class GameManager : MonoBehaviour
 
 	private DatabaseReference roomReference;
 
+	private long startedTimeTick = 0;
 	private string roomToken;
 
 	[Serializable]
 	public struct CharacterMode
 	{
-		[SerializeField] private Sprite[] characterChoice;
+		[SerializeField] public Sprite[] characterChoice;
 	}
 	#endregion
 
@@ -39,12 +41,36 @@ public class GameManager : MonoBehaviour
 		roomReference.ChildRemoved += HandleChildRemoved;
 	}
 
+	private void Update()
+	{
+		if (startedTimeTick > 0)
+		{
+			print(TimeSpan.FromTicks(DateTime.Now.Ticks - startedTimeTick).TotalSeconds);
+		}
+	}
+
 	private void HandleChildAdded(object sender, ChildChangedEventArgs args)
 	{
 		if (args.DatabaseError != null)
 		{
 			Debug.LogError(args.DatabaseError.Message);
 			return;
+		}
+
+		Debug.Log(args.Snapshot.Key);
+
+		switch (args.Snapshot.Key)
+		{
+			case "Status":
+			{
+				StartCoroutine(GetStatusAndUpdateChoice());
+				break;
+			}
+			case "Time":
+			{
+				startedTimeTick = long.Parse(args.Snapshot.Value.ToString());
+				break;
+			}
 		}
 
 	}
@@ -79,6 +105,30 @@ public class GameManager : MonoBehaviour
 	public void AddCode(string letter)
 	{
 		codeText.text += letter;
+	}
+
+	public void ClearCode()
+	{
+		codeText.text = "";
+	}
+
+	private IEnumerator GetStatusAndUpdateChoice()
+	{
+		int modeIndex = 0;
+		roomReference.Child("Status").GetValueAsync().ContinueWith(task =>
+		{
+			if (task.IsCompleted && task.Result.Exists)
+			{
+				modeIndex = int.Parse(task.Result.Value.ToString());
+			}
+		});
+
+		yield return new WaitUntil(() => modeIndex != 0);
+		modeIndex--;
+		for (int i = 0; i < ImageChoiceObj.Length; i++)
+		{
+			ImageChoiceObj[i].sprite = characterModesSprite[modeIndex].characterChoice[i];
+		}
 	}
 	#endregion
 }

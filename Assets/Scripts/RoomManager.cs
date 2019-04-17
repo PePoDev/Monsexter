@@ -19,6 +19,10 @@ public class RoomManager : MonoBehaviour
 
 	[Header("Spin UI")]
 	[SerializeField] private Slider SpinUI_Slider;
+	[SerializeField] private GameObject PanelPopup;
+	[SerializeField] private Image[] characterUI;
+	[SerializeField] private SpriteGroup[] PopupSprites;
+	[SerializeField] private SpriteGroup[] CharacterSprites;
 	[Space]
 
 	[Header("Canvas Group")]
@@ -28,8 +32,15 @@ public class RoomManager : MonoBehaviour
 
 	private DatabaseReference roomReference;
 
+	private int randomRole;
 	private int playerNumber;
 	private string roomToken;
+
+	[Serializable]
+	public struct SpriteGroup
+	{
+		[SerializeField] public Sprite[] sprite;
+	}
 	#endregion
 
 	[Serializable]
@@ -51,37 +62,6 @@ public class RoomManager : MonoBehaviour
 		roomReference.ChildAdded += HandleChildAdded;
 		roomReference.ChildChanged += HandleChildChanged;
 		roomReference.ChildRemoved += HandleChildRemoved;
-
-		//StartCoroutine(Initialization());
-	}
-
-	private IEnumerator Initialization()
-	{
-		var completeDataNumber = 0;
-		var playersName = new string[6];
-		for (var i = 1; i <= Config.MaxPlayer; i++)
-		{
-			var x = i;
-			roomReference.Child($"Player{x}").GetValueAsync().ContinueWith(playerTask =>
-			{
-				if (playerTask.IsCompleted && playerTask.Result.Exists)
-				{
-					playersName[x - 1] = playerTask.Result.Value as string;
-				}
-				else
-				{
-					playersName[x - 1] = "";
-				}
-				completeDataNumber++;
-			});
-		}
-
-		yield return new WaitUntil(() => completeDataNumber == 6);
-
-		for (var i = 0; i < Config.MaxPlayer; i++)
-		{
-			players[i].Name.SetText(playersName[i]);
-		}
 	}
 
 	private void OnApplicationQuit()
@@ -138,18 +118,27 @@ public class RoomManager : MonoBehaviour
 	#endregion
 
 	#region Utils Method
-	public void SelectMode(int i)
+	public void SelectMode(int modeIndex)
 	{
-		roomReference.Child("Status").SetValueAsync(i);
-		foreach (PlayerData player in players)
+		for (var i = 0; i < characterUI.Length; i++)
 		{
-			if (string.IsNullOrEmpty(player.Name.text))
-			{
-
-			}
+			characterUI[i].sprite = CharacterSprites[modeIndex - 1].sprite[i];
 		}
+
+		// TODO: Random with different character
+		randomRole = UnityEngine.Random.Range(0, 8);
+		characterUI[0].sprite = CharacterSprites[modeIndex - 1].sprite[randomRole];
+		characterUI[randomRole].sprite = CharacterSprites[modeIndex - 1].sprite[0];
+
+		PanelPopup.transform.GetChild(0).GetComponent<Image>().sprite = PopupSprites[modeIndex - 1].sprite[randomRole];
+
+		Debug.Log("Random character index: " + randomRole);
+
+		roomReference.Child("Status").SetValueAsync(modeIndex);
 	}
 
+	public bool isAnimationShowed { get; set; } = false;
+	public bool isPopupShowed { get; set; } = false;
 	public void Spinning()
 	{
 
@@ -162,7 +151,39 @@ public class RoomManager : MonoBehaviour
 		SpinUI_Slider.value = 0;
 		SpinUI_Slider.enabled = false;
 
+		GameObject.Find("Bone").GetComponent<Animator>().SetTrigger("Spinning");
+		
+		StartCoroutine(SetTimeAndLoadNextScene());
+		IEnumerator SetTimeAndLoadNextScene()
+		{
+			yield return new WaitUntil(() => isAnimationShowed);
 
+			PanelPopup.SetActive(true);
+			yield return new WaitUntil(() => isPopupShowed);
+
+			var hasSetData = false;
+			roomReference.Child("Time").GetValueAsync().ContinueWith(taskGet =>
+			{
+				if (taskGet.IsCompleted && !taskGet.Result.Exists)
+				{
+					roomReference.Child("Time").SetValueAsync(DateTime.Now.Ticks).ContinueWith((taskSet) =>
+					{
+						if (taskSet.IsCompleted)
+						{
+							hasSetData = true;
+						}
+					});
+				}
+				else
+				{
+					hasSetData = true;
+				}
+			});
+
+			yield return new WaitUntil(() => hasSetData);
+
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		}
 	}
 	#endregion
 }
