@@ -120,21 +120,38 @@ public class RoomManager : MonoBehaviour
 	#region Utils Method
 	public void SelectMode(int modeIndex)
 	{
-		for (var i = 0; i < characterUI.Length; i++)
+		var getStatus = false;
+		string StatusText = "";
+		roomReference.Child("Status").GetValueAsync().ContinueWith(task =>
 		{
-			characterUI[i].sprite = CharacterSprites[modeIndex - 1].sprite[i];
+			getStatus = true;
+			StatusText = task.Result.Value.ToString();
+		});
+
+		StartCoroutine(WaitFirebase());
+		IEnumerator WaitFirebase()
+		{
+			yield return new WaitUntil(()=> getStatus);
+
+			if (StatusText.Equals("Waitting"))
+			{
+				for (var i = 0; i < characterUI.Length; i++)
+				{
+					characterUI[i].sprite = CharacterSprites[modeIndex - 1].sprite[i];
+				}
+
+				// TODO: Random with different character
+				randomRole = UnityEngine.Random.Range(0, 8);
+				characterUI[0].sprite = CharacterSprites[modeIndex - 1].sprite[randomRole];
+				characterUI[randomRole].sprite = CharacterSprites[modeIndex - 1].sprite[0];
+
+				PanelPopup.transform.GetChild(0).GetComponent<Image>().sprite = PopupSprites[modeIndex - 1].sprite[randomRole];
+
+				Debug.Log("Random character index: " + randomRole);
+
+				roomReference.Child("Status").SetValueAsync(modeIndex);
+			}
 		}
-
-		// TODO: Random with different character
-		randomRole = UnityEngine.Random.Range(0, 8);
-		characterUI[0].sprite = CharacterSprites[modeIndex - 1].sprite[randomRole];
-		characterUI[randomRole].sprite = CharacterSprites[modeIndex - 1].sprite[0];
-
-		PanelPopup.transform.GetChild(0).GetComponent<Image>().sprite = PopupSprites[modeIndex - 1].sprite[randomRole];
-
-		Debug.Log("Random character index: " + randomRole);
-
-		roomReference.Child("Status").SetValueAsync(modeIndex);
 	}
 
 	public bool isAnimationShowed { get; set; } = false;
@@ -152,7 +169,7 @@ public class RoomManager : MonoBehaviour
 		SpinUI_Slider.enabled = false;
 
 		GameObject.Find("Bone").GetComponent<Animator>().SetTrigger("Spinning");
-		
+
 		StartCoroutine(SetTimeAndLoadNextScene());
 		IEnumerator SetTimeAndLoadNextScene()
 		{
