@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 	private string[] QuestionAndAnswer;
 	private long startedTimeTick = 0;
 	private string roomToken;
+	private bool isTimeup = false;
 
 	[Serializable]
 	public struct CharacterMode
@@ -80,9 +81,18 @@ public class GameManager : MonoBehaviour
 	}
 	private void Update()
 	{
-		if (startedTimeTick > 0)
+		if (!isTimeup && startedTimeTick > 0)
 		{
-			var timSpane = TimeSpan.FromTicks(Config.Instance.TrickFromTimeCapture - (DateTime.Now.Ticks - startedTimeTick));
+			var timeTicks = Config.Instance.TrickFromTimeCapture - (DateTime.Now.Ticks - startedTimeTick);
+
+			if (timeTicks < 0)
+			{
+				// TODO : Do somethings when time up
+				isTimeup = true;
+				return;
+			}
+
+			var timSpane = TimeSpan.FromTicks(timeTicks);
 			TimeText.text = timSpane.ToString(@"hh\ \:\ mm\ \:\ ss");
 		}
 
@@ -157,31 +167,34 @@ public class GameManager : MonoBehaviour
 	public void EnterCode()
 	{
 		var codeName = codeText.text;
-		if (codeName.Contains("A") || codeName.Contains("B") || codeName.Contains("C"))
+		if (codeName.Length == 3)
 		{
-			if (codeName[1].Equals("0"))
+			if (codeName.Contains("a") || codeName.Contains("b") || codeName.Contains("c"))
 			{
-				var n = int.Parse(codeName[2].ToString());
-				if (n > 0 && n < 9)
+				if (codeName[1].Equals('0'))
 				{
-					var firstLetter = codeName[0].ToString();
-					var arrayIdx = -1;
-					switch (firstLetter)
+					var n = int.Parse(codeName[2].ToString());
+					if (n > 0 && n < 9)
 					{
-						case "A":
-							arrayIdx = 0;
-							break;
-						case "B":
-							arrayIdx = 1;
-							break;
-						case "C":
-							arrayIdx = 2;
-							break;
+						var firstLetter = codeName[0].ToString();
+						var arrayIdx = -1;
+						switch (firstLetter)
+						{
+							case "a":
+								arrayIdx = 0;
+								break;
+							case "b":
+								arrayIdx = 1;
+								break;
+							case "c":
+								arrayIdx = 2;
+								break;
+						}
+						imageCharacter.sprite = CharacterSprites[arrayIdx].sprite[n - 1];
+						QuestionAndAnswer = QuestionAndAnswerList[arrayIdx].text[n - 1].text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+						textTitle.text = QuestionAndAnswer[0];
+						canvasCode.SetActive(true);
 					}
-					imageCharacter.sprite = CharacterSprites[arrayIdx].sprite[n - 1];
-					QuestionAndAnswer = QuestionAndAnswerList[arrayIdx].text[n - 1].text.Split( new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-					textTitle.text = QuestionAndAnswer[0];
-					canvasCode.SetActive(true);
 				}
 			}
 		}
@@ -203,8 +216,8 @@ public class GameManager : MonoBehaviour
 	{
 		var QuestionRandomNumber = UnityEngine.Random.Range(1, 9);
 		QuestionRandomNumber = (QuestionRandomNumber * 2) - 1;
-		textQuestion.gameObject.transform.parent.gameObject.SetActive(false);
-		textAnswer.gameObject.transform.parent.gameObject.SetActive(false);
+		textQuestion.gameObject.transform.parent.gameObject.SetActive(true);
+		textAnswer.gameObject.transform.parent.gameObject.SetActive(true);
 
 		textQuestion.text = QuestionAndAnswer[QuestionRandomNumber];
 		textAnswer.text = QuestionAndAnswer[QuestionRandomNumber + 1];
