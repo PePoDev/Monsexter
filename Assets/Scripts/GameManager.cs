@@ -39,6 +39,15 @@ public class GameManager : MonoBehaviour
 		roomReference.ChildAdded += HandleChildAdded;
 		roomReference.ChildChanged += HandleChildChanged;
 		roomReference.ChildRemoved += HandleChildRemoved;
+		
+		roomReference.Child("Time").GetValueAsync().ContinueWith(taskGet =>
+		{
+			if (taskGet.IsCompleted && !taskGet.Result.Exists)
+			{
+				startedTimeTick = DateTime.Now.Ticks;
+				roomReference.Child("Time").SetValueAsync(startedTimeTick);
+			}
+		});
 	}
 
 	private void Update()
@@ -56,7 +65,6 @@ public class GameManager : MonoBehaviour
 			Debug.LogError(args.DatabaseError.Message);
 			return;
 		}
-
 		Debug.Log(args.Snapshot.Key);
 
 		switch (args.Snapshot.Key)
@@ -72,9 +80,7 @@ public class GameManager : MonoBehaviour
 				break;
 			}
 		}
-
 	}
-
 	private void HandleChildChanged(object sender, ChildChangedEventArgs args)
 	{
 		if (args.DatabaseError != null)
@@ -84,7 +90,6 @@ public class GameManager : MonoBehaviour
 		}
 
 	}
-
 	private void HandleChildRemoved(object sender, ChildChangedEventArgs args)
 	{
 		if (args.DatabaseError != null)

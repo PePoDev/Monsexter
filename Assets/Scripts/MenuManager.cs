@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
@@ -19,12 +20,20 @@ public class MenuManager : MonoBehaviour
     [Header("Join UI")]
     [SerializeField] private TMP_InputField JoinUI_PlayerNameText;
     [SerializeField] private TMP_InputField JoinUI_RoomNameText;
+
+	public UnityEvent OnBack;
     #endregion
 
     #region Core Method
     private void Awake()
     {
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Config.FirebaseURL);
+
+		if (PlayerPrefs.HasKey("back"))
+		{
+			PlayerPrefs.DeleteKey("back");
+			OnBack.Invoke();
+		}
     }
     #endregion
 
@@ -67,10 +76,10 @@ public class MenuManager : MonoBehaviour
     }
     private IEnumerator Joining()
     {
-        PlayerPrefs.SetString("RoomToken", JoinUI_RoomNameText.text);
+        PlayerPrefs.SetString("RoomToken", JoinUI_RoomNameText.text.ToLower());
         PlayerPrefs.SetString("PlayerName", JoinUI_PlayerNameText.text);
 
-        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(JoinUI_RoomNameText.text);
+        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(JoinUI_RoomNameText.text.ToLower());
 
         var hasSeat = false;
         var hasFinish = false;

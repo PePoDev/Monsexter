@@ -3,9 +3,9 @@ using Firebase.Database;
 using Firebase.Unity.Editor;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -16,7 +16,6 @@ public class RoomManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI WaitingUI_RoomTokenText;
 	[SerializeField] private PlayerData[] players;
 	[Space]
-
 	[Header("Spin UI")]
 	[SerializeField] private Slider SpinUI_Slider;
 	[SerializeField] private GameObject PanelPopup;
@@ -24,24 +23,24 @@ public class RoomManager : MonoBehaviour
 	[SerializeField] private SpriteGroup[] PopupSprites;
 	[SerializeField] private SpriteGroup[] CharacterSprites;
 	[Space]
-
 	[Header("Canvas Group")]
 	[SerializeField] private Canvas canvasWaiting;
 	[SerializeField] private Canvas canvasModeSelect;
 	[SerializeField] private Canvas canvasSpin;
 
-	private DatabaseReference roomReference;
+	public Sprite spySprite;
 
-	private int randomRole;
+	private DatabaseReference roomReference;
 	private int playerNumber;
+	private int modeNumber = -1;
 	private string roomToken;
+	private bool tempBool;
 
 	[Serializable]
 	public struct SpriteGroup
 	{
 		[SerializeField] public Sprite[] sprite;
 	}
-	#endregion
 
 	[Serializable]
 	public struct PlayerData
@@ -49,12 +48,15 @@ public class RoomManager : MonoBehaviour
 		public Image ProfilePicture;
 		public TextMeshProUGUI Name;
 	}
+	#endregion
 
 	#region Core Method
 	private void Awake()
 	{
 		roomToken = PlayerPrefs.GetString("RoomToken");
 		WaitingUI_RoomTokenText.SetText(roomToken);
+
+		playerNumber = 0;
 
 		FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Config.FirebaseURL);
 		roomReference = FirebaseDatabase.DefaultInstance.GetReference(roomToken);
@@ -63,10 +65,9 @@ public class RoomManager : MonoBehaviour
 		roomReference.ChildChanged += HandleChildChanged;
 		roomReference.ChildRemoved += HandleChildRemoved;
 	}
-
 	private void OnApplicationQuit()
 	{
-		roomReference.Child($"Player{PlayerPrefs.GetInt("PlayerIndex").ToString()}").RemoveValueAsync();
+		//roomReference.Child($"Player{PlayerPrefs.GetInt("PlayerIndex").ToString()}").RemoveValueAsync();
 	}
 
 	private void HandleChildAdded(object sender, ChildChangedEventArgs args)
@@ -80,10 +81,32 @@ public class RoomManager : MonoBehaviour
 		Debug.Log("Added: " + args.Snapshot.Key);
 		if (args.Snapshot.Key.Contains("Player"))
 		{
-			players[int.Parse(args.Snapshot.Key.TrimStart('P', 'l', 'a', 'y', 'e', 'r')) - 1].Name.SetText(args.Snapshot.Value.ToString());
+			var playerIdx = int.Parse(args.Snapshot.Key.TrimStart('P', 'l', 'a', 'y', 'e', 'r')) - 1;
+			players[playerIdx].Name.SetText(args.Snapshot.Value.ToString());
+			players[playerIdx].ProfilePicture.gameObject.SetActive(true);
+			playerNumber++;
+		}
+
+		if (args.Snapshot.Key.Equals("Random"))
+		{
+			PlayerRandomRole randomData = JsonUtility.FromJson<PlayerRandomRole>(args.Snapshot.GetRawJsonValue());
+			int myRole = randomData.playerRole[PlayerPrefs.GetInt("PlayerIndex")];
+
+			if (myRole == 0)
+			{
+				characterUI[0].sprite = spySprite;
+				PanelPopup.transform.GetChild(0).GetComponent<Image>().sprite = spySprite;
+			}
+			else
+			{
+				characterUI[0].sprite = CharacterSprites[modeNumber - 1].sprite[myRole];
+				characterUI[myRole].sprite = CharacterSprites[modeNumber - 1].sprite[0];
+
+				PanelPopup.transform.GetChild(0).GetComponent<Image>().sprite = PopupSprites[modeNumber - 1].sprite[myRole];
+			}
+			tempBool = true;
 		}
 	}
-
 	private void HandleChildChanged(object sender, ChildChangedEventArgs args)
 	{
 		if (args.DatabaseError != null)
@@ -91,16 +114,29 @@ public class RoomManager : MonoBehaviour
 			Debug.LogError(args.DatabaseError.Message);
 			return;
 		}
-
 		Debug.Log("Changed: " + args.Snapshot.Key);
-		if (args.Snapshot.Key.Equals("Status") && !args.Snapshot.Value.ToString().Equals("Waiting"))
+
+		if (args.Snapshot.Key.Equals("Status") && args.Snapshot.Value.ToString().Equals("Waiting") == false)
 		{
-			canvasWaiting.gameObject.SetActive(false);
-			canvasModeSelect.gameObject.SetActive(false);
-			canvasSpin.gameObject.SetActive(true);
+			var modeIndex = int.Parse(args.Snapshot.Value.ToString());
+			for (var i = 0; i < characterUI.Length; i++)
+			{
+				characterUI[i].sprite = CharacterSprites[modeIndex - 1].sprite[i];
+			}
+
+			modeNumber = modeIndex;
+			tempBool = false;
+
+			StartCoroutine(waitToActiveSpinPage());
+			IEnumerator waitToActiveSpinPage()
+			{
+				yield return new WaitUntil(() => tempBool);
+				canvasWaiting.gameObject.SetActive(false);
+				canvasModeSelect.gameObject.SetActive(false);
+				canvasSpin.gameObject.SetActive(true);
+			}
 		}
 	}
-
 	private void HandleChildRemoved(object sender, ChildChangedEventArgs args)
 	{
 		if (args.DatabaseError != null)
@@ -108,8 +144,8 @@ public class RoomManager : MonoBehaviour
 			Debug.LogError(args.DatabaseError.Message);
 			return;
 		}
-
 		Debug.Log("Removed: " + args.Snapshot.Key);
+
 		if (args.Snapshot.Key.Contains("Player"))
 		{
 			players[int.Parse(args.Snapshot.Key.TrimStart('P', 'l', 'a', 'y', 'e', 'r')) - 1].Name.SetText("");
@@ -120,8 +156,14 @@ public class RoomManager : MonoBehaviour
 	#region Utils Method
 	public void SelectMode(int modeIndex)
 	{
+		// Need player more than 4 to start this game.
+		if (playerNumber < 4)
+		{
+			return;
+		}
+
 		var getStatus = false;
-		string StatusText = "";
+		var StatusText = "";
 		roomReference.Child("Status").GetValueAsync().ContinueWith(task =>
 		{
 			getStatus = true;
@@ -131,29 +173,37 @@ public class RoomManager : MonoBehaviour
 		StartCoroutine(WaitFirebase());
 		IEnumerator WaitFirebase()
 		{
-			yield return new WaitUntil(()=> getStatus);
+			yield return new WaitUntil(() => getStatus);
 
-			if (StatusText.Equals("Waitting"))
+			if (StatusText.Equals("Waiting"))
 			{
-				for (var i = 0; i < characterUI.Length; i++)
+				var playersRandom = new PlayerRandomRole
 				{
-					characterUI[i].sprite = CharacterSprites[modeIndex - 1].sprite[i];
+					playerRole = new int[playerNumber]
+				};
+
+				var listRole = new List<int>();
+
+				for (var i = 0; i < playerNumber; i++)
+				{
+					listRole.Add(i);
 				}
 
-				// TODO: Random with different character
-				randomRole = UnityEngine.Random.Range(0, 8);
-				characterUI[0].sprite = CharacterSprites[modeIndex - 1].sprite[randomRole];
-				characterUI[randomRole].sprite = CharacterSprites[modeIndex - 1].sprite[0];
+				for (var i = 0; i < playerNumber; i++)
+				{
+					var randomNumber = UnityEngine.Random.Range(0, listRole.Count);
+					playersRandom.playerRole[i] = listRole[randomNumber];
+					listRole.RemoveAt(randomNumber);
+				}
 
-				PanelPopup.transform.GetChild(0).GetComponent<Image>().sprite = PopupSprites[modeIndex - 1].sprite[randomRole];
 
-				Debug.Log("Random character index: " + randomRole);
-
-				roomReference.Child("Status").SetValueAsync(modeIndex);
+				roomReference.Child("Status").SetValueAsync(modeIndex).ContinueWith(task =>
+				{
+					roomReference.Child("Random").SetRawJsonValueAsync(JsonUtility.ToJson(playersRandom));
+				});
 			}
 		}
 	}
-
 	public bool isAnimationShowed { get; set; } = false;
 	public bool isPopupShowed { get; set; } = false;
 	public void Spinning()
@@ -174,33 +224,29 @@ public class RoomManager : MonoBehaviour
 		IEnumerator SetTimeAndLoadNextScene()
 		{
 			yield return new WaitUntil(() => isAnimationShowed);
+			yield return new WaitForSeconds(1f);
 
 			PanelPopup.SetActive(true);
 			yield return new WaitUntil(() => isPopupShowed);
 
-			var hasSetData = false;
-			roomReference.Child("Time").GetValueAsync().ContinueWith(taskGet =>
-			{
-				if (taskGet.IsCompleted && !taskGet.Result.Exists)
-				{
-					roomReference.Child("Time").SetValueAsync(DateTime.Now.Ticks).ContinueWith((taskSet) =>
-					{
-						if (taskSet.IsCompleted)
-						{
-							hasSetData = true;
-						}
-					});
-				}
-				else
-				{
-					hasSetData = true;
-				}
-			});
-
-			yield return new WaitUntil(() => hasSetData);
-
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		}
 	}
+	public void Back()
+	{
+		PlayerPrefs.SetString("back", "yes");
+		DestroyRoom();
+		SceneManager.LoadScene(0);
+	}
+	public void DestroyRoom()
+	{
+		roomReference.Child(roomToken).RemoveValueAsync();
+	}
 	#endregion
+}
+
+[Serializable]
+public class PlayerRandomRole
+{
+	public int[] playerRole;
 }
