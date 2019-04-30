@@ -3,7 +3,6 @@ using Firebase.Database;
 using Firebase.Unity.Editor;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -90,9 +89,9 @@ public class RoomManager : MonoBehaviour
 		if (args.Snapshot.Key.Equals("Random"))
 		{
 			PlayerRandomRole randomData = JsonUtility.FromJson<PlayerRandomRole>(args.Snapshot.GetRawJsonValue());
-			int myRole = randomData.playerRole[PlayerPrefs.GetInt("PlayerIndex")];
+			var myRole = randomData.playerRole[PlayerPrefs.GetInt("PlayerIndex") - 1];
 
-			if (myRole == 0)
+			if (myRole == -1)
 			{
 				characterUI[0].sprite = spySprite;
 				PanelPopup.transform.GetChild(0).GetComponent<Image>().sprite = spySprite;
@@ -157,7 +156,7 @@ public class RoomManager : MonoBehaviour
 	public void SelectMode(int modeIndex)
 	{
 		// Need player more than 4 to start this game.
-		if (playerNumber < 4)
+		if (playerNumber < 3)
 		{
 			return;
 		}
@@ -182,20 +181,13 @@ public class RoomManager : MonoBehaviour
 					playerRole = new int[playerNumber]
 				};
 
-				var listRole = new List<int>();
-
+				var randomNumber = UnityEngine.Random.Range(0, 8);
 				for (var i = 0; i < playerNumber; i++)
 				{
-					listRole.Add(i);
+					playersRandom.playerRole[i] = randomNumber;
 				}
 
-				for (var i = 0; i < playerNumber; i++)
-				{
-					var randomNumber = UnityEngine.Random.Range(0, listRole.Count);
-					playersRandom.playerRole[i] = listRole[randomNumber];
-					listRole.RemoveAt(randomNumber);
-				}
-
+				playersRandom.playerRole[UnityEngine.Random.Range(0, playerNumber)] = -1;
 
 				roomReference.Child("Status").SetValueAsync(modeIndex).ContinueWith(task =>
 				{
@@ -224,7 +216,7 @@ public class RoomManager : MonoBehaviour
 		IEnumerator SetTimeAndLoadNextScene()
 		{
 			yield return new WaitUntil(() => isAnimationShowed);
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(0.5f);
 
 			PanelPopup.SetActive(true);
 			yield return new WaitUntil(() => isPopupShowed);
