@@ -153,8 +153,9 @@ public class RoomManager : MonoBehaviour
 	#region Utils Method
 	public void SelectMode(int modeIndex)
 	{
-		// Need player more than 4 to start this game.
-		if (playerNumber < 3)
+        LoadingComponent.StartLoading();
+
+        if (playerNumber < 3)
 		{
 			return;
 		}

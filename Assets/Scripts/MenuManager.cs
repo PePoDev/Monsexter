@@ -6,8 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
@@ -25,10 +27,20 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject CanvasMenu;
 
     public Loading LoadingComponet;
+
+    public AudioMixer audioMixer;
+    public Image ui_bgm;
+    public Image ui_sfx;
+    public Sprite bgmMuted;
+    public Sprite bgmUnMute;
+    public Sprite sfxMuted;
+    public Sprite sfxUnMute;
+
+    private bool bgm, sfx;
     #endregion
 
     #region Core Method
-    private void Awake()
+    private void Start()
     {
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl(Config.FirebaseURL);
 
@@ -38,6 +50,24 @@ public class MenuManager : MonoBehaviour
             CanvasSplashscreen.SetActive(false);
             CanvasMenu.SetActive(true);
         }
+
+        if (!PlayerPrefs.HasKey("bgm"))
+        {
+            PlayerPrefs.SetFloat("bgm", 1f);
+        }
+        bgm = PlayerPrefs.GetFloat("bgm") > 0f ? true : false;
+
+        if (!PlayerPrefs.HasKey("sfx"))
+        {
+            PlayerPrefs.SetFloat("sfx", 1f);
+        }
+        sfx = PlayerPrefs.GetFloat("sfx") > 0f ? true : false;
+
+        audioMixer.SetFloat("bgmVol", bgm ? 0f : -80f);
+        audioMixer.SetFloat("sfxVol", sfx ? 0f : -80f);
+
+        ui_bgm.sprite = bgm ? bgmUnMute : bgmMuted;
+        ui_sfx.sprite = sfx ? sfxUnMute : sfxMuted;
     }
     #endregion
 
@@ -85,6 +115,7 @@ public class MenuManager : MonoBehaviour
 
             DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.GetReference(JoinUI_RoomNameText.text.ToLower());
 
+            var isRoomStarted = false;
             var hasSeat = false;
             var hasFinish = false;
             var hasRoom = true;
@@ -98,6 +129,10 @@ public class MenuManager : MonoBehaviour
                     if (task.Result.Exists == false)
                     {
                         hasRoom = false;
+                    }
+                    else if (!task.Result.Value.ToString().Equals("Waiting"))
+                    {
+                        isRoomStarted = true;
                     }
                     else
                     {
@@ -147,12 +182,48 @@ public class MenuManager : MonoBehaviour
                 Debug.Log("Room is full");
                 LoadingComponet.StopLoading();
             }
+            else if (isRoomStarted)
+            {
+                Debug.Log("This room has started");
+                LoadingComponet.StopLoading();
+            }
             else
             {
                 PlayerPrefs.SetInt("PlayerIndex", playerIndex);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
+    }
+    public void ToggleBGM()
+    {
+        bgm = !bgm;
+        ui_bgm.sprite = bgm ? bgmUnMute : bgmMuted;
+        audioMixer.SetFloat("bgmVol", bgm ? 0f : -80f);
+        PlayerPrefs.SetFloat("bgm", bgm ? 1f : 0f);
+    }
+    public void ToggleSFX()
+    {
+        sfx = !sfx;
+        ui_sfx.sprite = sfx ? sfxUnMute : sfxMuted;
+        audioMixer.SetFloat("sfxVol", sfx ? 0f : -80f);
+        PlayerPrefs.SetFloat("sfx", sfx ? 1f : 0f);
+    }
+
+    public void Reset_RoomTest()
+    {
+        FirebaseDatabase.DefaultInstance.GetReference("aaaaaaaa").RemoveValueAsync().ContinueWith(task1 =>
+        {
+            FirebaseDatabase.DefaultInstance.RootReference.Child("aaaaaaaa").Child("Player1").SetValueAsync("Test1").ContinueWith(task2 =>
+            {
+                FirebaseDatabase.DefaultInstance.RootReference.Child("aaaaaaaa").Child("Player2").SetValueAsync("Test2").ContinueWith(task3 =>
+                {
+                    FirebaseDatabase.DefaultInstance.RootReference.Child("aaaaaaaa").Child("Status").SetValueAsync("Waiting").ContinueWith(task4 =>
+                    {
+                        print("Reset complete");
+                    });
+                });
+            });
+        });
     }
     #endregion
 }
