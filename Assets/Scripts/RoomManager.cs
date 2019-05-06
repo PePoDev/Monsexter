@@ -28,6 +28,7 @@ public class RoomManager : MonoBehaviour
 	[SerializeField] private Canvas canvasSpin;
 
 	public Sprite spySprite;
+	public Loading LoadingComponent;
 
 	private DatabaseReference roomReference;
 	private int playerNumber;
@@ -63,10 +64,6 @@ public class RoomManager : MonoBehaviour
 		roomReference.ChildAdded += HandleChildAdded;
 		roomReference.ChildChanged += HandleChildChanged;
 		roomReference.ChildRemoved += HandleChildRemoved;
-	}
-	private void OnApplicationQuit()
-	{
-		//roomReference.Child($"Player{PlayerPrefs.GetInt("PlayerIndex").ToString()}").RemoveValueAsync();
 	}
 
 	private void HandleChildAdded(object sender, ChildChangedEventArgs args)
@@ -133,7 +130,8 @@ public class RoomManager : MonoBehaviour
 				canvasWaiting.gameObject.SetActive(false);
 				canvasModeSelect.gameObject.SetActive(false);
 				canvasSpin.gameObject.SetActive(true);
-			}
+                LoadingComponent.StopLoading();
+            }
 		}
 	}
 	private void HandleChildRemoved(object sender, ChildChangedEventArgs args)
@@ -145,10 +143,10 @@ public class RoomManager : MonoBehaviour
 		}
 		Debug.Log("Removed: " + args.Snapshot.Key);
 
-		if (args.Snapshot.Key.Contains("Player"))
+		if (args.Snapshot.Key.Equals("Status"))
 		{
-			players[int.Parse(args.Snapshot.Key.TrimStart('P', 'l', 'a', 'y', 'e', 'r')) - 1].Name.SetText("");
-		}
+            Back();
+        }
 	}
 	#endregion
 
@@ -173,8 +171,9 @@ public class RoomManager : MonoBehaviour
 		IEnumerator WaitFirebase()
 		{
 			yield return new WaitUntil(() => getStatus);
+            LoadingComponent.StartLoading();
 
-			if (StatusText.Equals("Waiting"))
+            if (StatusText.Equals("Waiting"))
 			{
 				var playersRandom = new PlayerRandomRole
 				{
@@ -227,12 +226,8 @@ public class RoomManager : MonoBehaviour
 	public void Back()
 	{
 		PlayerPrefs.SetString("back", "yes");
-		DestroyRoom();
-		SceneManager.LoadScene(0);
-	}
-	public void DestroyRoom()
-	{
-		roomReference.Child(roomToken).RemoveValueAsync();
+        roomReference.RemoveValueAsync();
+        SceneManager.LoadScene(0);
 	}
 	#endregion
 }
