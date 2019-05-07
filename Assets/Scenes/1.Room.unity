@@ -942,8 +942,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 1384419835}
-    ActiveGameObject: {fileID: 1384419835}
+    - {fileID: 1792186891}
+    ActiveGameObject: {fileID: 1792186891}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -956,6 +956,18 @@ MonoBehaviour:
     list:
     - {fileID: 1093172334}
     ActiveGameObject: {fileID: 1093172334}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 1384419835}
+    ActiveGameObject: {fileID: 1384419835}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -1212,18 +1224,6 @@ MonoBehaviour:
     list:
     - {fileID: 960894148}
     ActiveGameObject: {fileID: 960894148}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 260920917}
-    ActiveGameObject: {fileID: 260920917}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -5834,6 +5834,17 @@ MonoBehaviour:
       - m_Target: {fileID: 152299059}
         m_MethodName: set_isPopupShowed
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1715603822}
+        m_MethodName: Play
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

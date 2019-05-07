@@ -10,6 +10,7 @@ using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class MenuManager : MonoBehaviour
 {
@@ -36,6 +37,13 @@ public class MenuManager : MonoBehaviour
     public Sprite sfxMuted;
     public Sprite sfxUnMute;
 
+    public SpriteRenderer videoPlayerPanel;
+    public VideoPlayer videoPlayer;
+    public VideoClip[] videoTutorials;
+
+    public UnityEvent OnEndedTutorial;
+
+    private int currentTutorial = -1;
     private bool bgm, sfx;
     #endregion
 
@@ -224,6 +232,37 @@ public class MenuManager : MonoBehaviour
                 });
             });
         });
+    }
+
+    public void NextTutorial()
+    {
+        SetAlphaOff(videoPlayerPanel);
+
+        currentTutorial++;
+        if (currentTutorial == videoTutorials.Length)
+        {
+            OnEndedTutorial.Invoke();
+            return;
+        }
+
+        videoPlayer.clip = videoTutorials[currentTutorial];
+
+        videoPlayer.Prepare();
+        videoPlayer.prepareCompleted += _videoPlayer =>
+        {
+            SetAlphaOn(videoPlayerPanel);
+            _videoPlayer.Play();
+        };
+    }
+
+    public void SetAlphaOff(SpriteRenderer sr)
+    {
+        sr.color = new Color(1f, 1f, 1f, 0f);
+    }
+
+    public void SetAlphaOn(SpriteRenderer sr)
+    {
+        sr.color = new Color(1f, 1f, 1f, 1f);
     }
     #endregion
 }

@@ -173,11 +173,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Utils Method
-    public void LoadRoomScene()
-    {
-
-        SceneManager.LoadScene(1);
-    }
     public void EnterCode()
     {
         var codeName = codeText.text;
@@ -255,6 +250,17 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetString("back", "yes");
         roomReference.RemoveValueAsync();
         SceneManager.LoadScene(0);
+    }
+    public void TimeUp()
+    {
+        LoadingComponent.StartLoading();
+        roomReference.Child("Status").SetValueAsync("Waiting").ContinueWith(task =>
+        {
+            roomReference.Child("Time").RemoveValueAsync();
+            roomReference.Child("Random").RemoveValueAsync();
+            SceneManager.LoadScene(1);
+        });
+
     }
     #endregion
 }
