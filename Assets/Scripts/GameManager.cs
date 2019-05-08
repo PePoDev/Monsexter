@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        var QuestionRandomNumber = UnityEngine.Random.Range(1, 9);
+        var QuestionRandomNumber = UnityEngine.Random.Range(1, (QuestionAndAnswer.Length + 1) / 2);
         QuestionRandomNumber = (QuestionRandomNumber * 2) - 1;
         textQuestion.gameObject.transform.parent.gameObject.SetActive(true);
         textAnswer.gameObject.transform.parent.gameObject.SetActive(true);
