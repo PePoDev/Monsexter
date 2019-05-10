@@ -199,7 +199,8 @@ public class GameManager : MonoBehaviour
                                 arrayIdx = 2;
                                 break;
                         }
-                        imageCharacter.sprite = CharacterSprites[arrayIdx].sprite[n - 1];
+						imageCharacter.sprite = null;
+						imageCharacter.sprite = CharacterSprites[arrayIdx].sprite[n - 1];
                         QuestionAndAnswer = QuestionAndAnswerList[arrayIdx].text[n - 1].text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
                         textTitle.text = QuestionAndAnswer[0];
                         canvasCode.SetActive(true);
@@ -226,8 +227,8 @@ public class GameManager : MonoBehaviour
     {
         if (SpinTime == 1)
         {
-            textQuestion.gameObject.transform.parent.gameObject.SetActive(false);
-            textAnswer.gameObject.transform.parent.gameObject.SetActive(false);
+            textQuestion.gameObject.transform.parent.parent.gameObject.SetActive(false);
+            textAnswer.gameObject.transform.parent.parent.gameObject.SetActive(false);
             SpinTime++;
             return;
         }
@@ -238,11 +239,11 @@ public class GameManager : MonoBehaviour
 
         var QuestionRandomNumber = UnityEngine.Random.Range(1, (QuestionAndAnswer.Length + 1) / 2);
         QuestionRandomNumber = (QuestionRandomNumber * 2) - 1;
-        textQuestion.gameObject.transform.parent.gameObject.SetActive(true);
-        textAnswer.gameObject.transform.parent.gameObject.SetActive(true);
+        textQuestion.gameObject.transform.parent.parent.gameObject.SetActive(true);
+        textAnswer.gameObject.transform.parent.parent.gameObject.SetActive(true);
 
-        textQuestion.text = QuestionAndAnswer[QuestionRandomNumber];
-        textAnswer.text = QuestionAndAnswer[QuestionRandomNumber + 1];
+        textQuestion.text = "\n" + QuestionAndAnswer[QuestionRandomNumber] + "\n ";
+        textAnswer.text = "\n" + QuestionAndAnswer[QuestionRandomNumber + 1] + "\n ";
         SpinTime++;
     }
     public void Back()

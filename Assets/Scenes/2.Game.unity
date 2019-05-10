@@ -547,10 +547,10 @@ RectTransform:
   m_Father: {fileID: 305341255}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 515, y: 0}
+  m_SizeDelta: {x: -27.3, y: -74.42999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &52739234
 MonoBehaviour:
@@ -572,7 +572,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "A01: \u0E16\u0E38\u0E07\u0E22\u0E32\u0E07\u0E2D\u0E19\u0E32\u0E21\u0E31\u0E22"
+  m_text: "\u0E43\u0E0A\u0E49\u0E23\u0E48\u0E27\u0E21\u0E01\u0E31\u0E1A\u0E01\u0E32\u0E23\u0E04\u0E38\u0E21\u0E01\u0E33\u0E40\u0E19\u0E34\u0E14\u0E2D\u0E37\u0E48\u0E19\u0E46\u0E14\u0E49\u0E27\u0E22\u0E44\u0E14\u0E49\u0E2B\u0E23\u0E37\u0E2D\u0E44\u0E21\u0E48?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fdd200c9091896a4c9c58bef45baaa0a, type: 2}
   m_sharedMaterial: {fileID: 21903168048680274, guid: fdd200c9091896a4c9c58bef45baaa0a,
@@ -601,8 +601,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 56
-  m_fontSizeBase: 56
+  m_fontSize: 46
+  m_fontSizeBase: 46
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -642,12 +642,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 52739234}
-    characterCount: 17
+    characterCount: 42
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 4
+    spaceCount: 0
+    wordCount: 10
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -724,7 +724,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 554.4, y: 287.9}
+  m_SizeDelta: {x: 554.4, y: 337.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92163724
 MonoBehaviour:
@@ -2294,7 +2294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &219797676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,7 +2846,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 554.4, y: 137.3}
+  m_SizeDelta: {x: 554.4, y: 174.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &305341256
 MonoBehaviour:
@@ -2934,8 +2934,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 52739232}
-    ActiveGameObject: {fileID: 52739232}
+    - {fileID: 1675530848}
+    ActiveGameObject: {fileID: 1675530848}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -2946,8 +2946,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 429537879}
-    ActiveGameObject: {fileID: 429537879}
+    - {fileID: 219797675}
+    ActiveGameObject: {fileID: 219797675}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -2958,68 +2958,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 92163722}
-    ActiveGameObject: {fileID: 92163722}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 305341254}
-    ActiveGameObject: {fileID: 305341254}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 666081448}
-    ActiveGameObject: {fileID: 666081448}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 1489213704}
-    ActiveGameObject: {fileID: 1489213704}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 0}
-    ActiveGameObject: {fileID: 0}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 1470773646}
-    ActiveGameObject: {fileID: 1470773646}
+    - {fileID: 1546750159}
+    ActiveGameObject: {fileID: 1546750159}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3042,8 +2982,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 0}
-    ActiveGameObject: {fileID: 0}
+    - {fileID: 1136804941}
+    ActiveGameObject: {fileID: 1136804941}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3054,8 +2994,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 0}
-    ActiveGameObject: {fileID: 0}
+    - {fileID: 1489213704}
+    ActiveGameObject: {fileID: 1489213704}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3066,8 +3006,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 0}
-    ActiveGameObject: {fileID: 0}
+    - {fileID: 305341254}
+    ActiveGameObject: {fileID: 305341254}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3078,8 +3018,8 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 0}
-    ActiveGameObject: {fileID: 0}
+    - {fileID: 429537879}
+    ActiveGameObject: {fileID: 429537879}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3090,8 +3030,56 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 0}
-    ActiveGameObject: {fileID: 0}
+    - {fileID: 666081448}
+    ActiveGameObject: {fileID: 666081448}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 92163722}
+    ActiveGameObject: {fileID: 92163722}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 52739232}
+    ActiveGameObject: {fileID: 52739232}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 515776868}
+    ActiveGameObject: {fileID: 515776868}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 129882144}
+    ActiveGameObject: {fileID: 129882144}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3114,6 +3102,18 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
+    - {fileID: 1470773646}
+    ActiveGameObject: {fileID: 1470773646}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
     - {fileID: 547486324}
     ActiveGameObject: {fileID: 547486324}
     GUIDsList: []
@@ -3126,8 +3126,68 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
-    - {fileID: 129882144}
-    ActiveGameObject: {fileID: 129882144}
+    - {fileID: 0}
+    ActiveGameObject: {fileID: 0}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 0}
+    ActiveGameObject: {fileID: 0}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 0}
+    ActiveGameObject: {fileID: 0}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 0}
+    ActiveGameObject: {fileID: 0}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 0}
+    ActiveGameObject: {fileID: 0}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
+    - {fileID: 0}
+    ActiveGameObject: {fileID: 0}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3152,66 +3212,6 @@ MonoBehaviour:
     list:
     - {fileID: 1252086461}
     ActiveGameObject: {fileID: 1252086461}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 1886435124}
-    ActiveGameObject: {fileID: 1886435124}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 109523552}
-    ActiveGameObject: {fileID: 109523552}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 218792016}
-    ActiveGameObject: {fileID: 218792016}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 1812894236}
-    ActiveGameObject: {fileID: 1812894236}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 1574161744}
-    ActiveGameObject: {fileID: 1574161744}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []
@@ -3632,7 +3632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &429537880
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3705,7 +3705,7 @@ MonoBehaviour:
   m_Content: {fileID: 666081449}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 2
+  m_MovementType: 1
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -4905,7 +4905,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000045776367}
-  m_SizeDelta: {x: -35.400024, y: 0}
+  m_SizeDelta: {x: -35.400024, y: 89.600006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &666081450
 MonoBehaviour:
@@ -4927,7 +4927,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "A01: \u0E16\u0E38\u0E07\u0E22\u0E32\u0E07\u0E2D\u0E19\u0E32\u0E21\u0E31\u0E22"
+  m_text: "\u0E40\u0E2B\u0E21\u0E32\u0E30\u0E2A\u0E33\u0E2B\u0E23\u0E31\u0E1A\u0E1C\u0E39\u0E49\u0E2B\u0E0D\u0E34\u0E07\u0E17\u0E38\u0E01\u0E04\u0E19\u0E17\u0E35\u0E48\u0E15\u0E49\u0E2D\u0E07\u0E01\u0E32\u0E23\u0E04\u0E38\u0E21\u0E01\u0E33\u0E40\u0E19\u0E34\u0E14
+    \u0E2B\u0E23\u0E37\u0E2D\u0E21\u0E31\u0E01\u0E25\u0E37\u0E21\u0E23\u0E31\u0E1A\u0E1B\u0E23\u0E30\u0E17\u0E32\u0E19\u0E22\u0E32\u0E40\u0E21\u0E47\u0E14\u0E04\u0E38\u0E21\u0E01\u0E33\u0E40\u0E19\u0E34\u0E14\u0E40\u0E1B\u0E47\u0E19\u0E1B\u0E23\u0E30\u0E08\u0E33
+    \u0E41\u0E25\u0E30\u0E40\u0E1B\u0E47\u0E19\u0E2D\u0E35\u0E01\u0E17\u0E32\u0E07\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E2B\u0E19\u0E36\u0E48\u0E07\u0E41\u0E17\u0E19\u0E01\u0E32\u0E23\u0E43\u0E2A\u0E48\u0E2B\u0E48\u0E27\u0E07\u0E04\u0E38\u0E21\u0E01\u0E33\u0E40\u0E19\u0E34\u0E14\u0E2B\u0E23\u0E37\u0E2D\u0E43\u0E0A\u0E49\u0E22\u0E32\u0E1D\u0E31\u0E07\u0E04\u0E38\u0E21\u0E01\u0E33\u0E40\u0E19\u0E34\u0E14"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fdd200c9091896a4c9c58bef45baaa0a, type: 2}
   m_sharedMaterial: {fileID: 21903168048680274, guid: fdd200c9091896a4c9c58bef45baaa0a,
@@ -4956,8 +4958,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 48.3
-  m_fontSizeBase: 48.3
+  m_fontSize: 46
+  m_fontSizeBase: 46
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4997,12 +4999,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 666081450}
-    characterCount: 17
+    characterCount: 153
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 4
+    spaceCount: 2
+    wordCount: 32
     linkCount: 0
-    lineCount: 1
+    lineCount: 7
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -6599,7 +6601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1489213705
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6672,7 +6674,7 @@ MonoBehaviour:
   m_Content: {fileID: 52739233}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 2
+  m_MovementType: 1
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -6916,8 +6918,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 65.92
-  m_fontSizeBase: 65.92
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7419,7 +7421,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -149}
-  m_SizeDelta: {x: 1018.8, y: 1575.5}
+  m_SizeDelta: {x: 1022.7, y: 1582}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1675530850
 MonoBehaviour:
@@ -8126,7 +8128,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a383469c06db3db49ac00c4bcbbd9ae5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: efc7aba9041304a4fbd7148c326ea9d3, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

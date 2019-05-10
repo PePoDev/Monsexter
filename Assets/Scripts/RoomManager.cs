@@ -27,6 +27,8 @@ public class RoomManager : MonoBehaviour
 	[SerializeField] private Canvas canvasModeSelect;
 	[SerializeField] private Canvas canvasSpin;
 
+	public AudioSource SpinSFX;
+
 	public Sprite spySprite;
 	public Loading LoadingComponent;
 
@@ -211,6 +213,7 @@ public class RoomManager : MonoBehaviour
 		SpinUI_Slider.enabled = false;
 
 		GameObject.Find("Bone").GetComponent<Animator>().SetTrigger("Spinning");
+		SpinSFX.Play();
 
 		StartCoroutine(SetTimeAndLoadNextScene());
 		IEnumerator SetTimeAndLoadNextScene()
