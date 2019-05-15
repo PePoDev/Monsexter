@@ -943,6 +943,18 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
+    - {fileID: 260920917}
+    ActiveGameObject: {fileID: 260920917}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
     - {fileID: 152299058}
     ActiveGameObject: {fileID: 152299058}
     GUIDsList: []
@@ -1218,18 +1230,6 @@ MonoBehaviour:
     InstanceID: 0
     wasInit: 0
     CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 1173570734}
-    ActiveGameObject: {fileID: 1173570734}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
   Hash4: []
   Hash5: []
   Hash5_Fix2_0:
@@ -1242,9 +1242,6 @@ MonoBehaviour:
   - go: {fileID: 181240408}
     guid: 
     path: 
-  - go: {fileID: 0}
-    guid: 
-    path: 
   - go: {fileID: 260920917}
     guid: 
     path: 
@@ -1252,7 +1249,6 @@ MonoBehaviour:
   - list: e10000002300000045000000ff00000000000000f5000000ba0000001f000000ff00000001000000a0000000
   - list: e10000002300000045000000ff00000000000000f5000000ba0000001f000000ff00000001000000a0000000
   - list: e10000002300000045000000ff00000000000000f5000000ba0000001f000000ff00000001000000a0000000
-  - list: cf0000001b00000027000000ff00000000000000f5000000ba0000001f000000ff00000009000000a0000000
   - list: cf0000001b00000027000000ff00000000000000f5000000ba0000001f000000ff00000009000000a0000000
   Hash7: []
   Hash7_Fix2_0: []
@@ -3712,19 +3708,13 @@ PrefabInstance:
       objectReference: {fileID: 555296994}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e10b72306ce6b9499006749349a31ff, type: 3}
---- !u!1 &1173570734 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6123292353102998750, guid: 5e10b72306ce6b9499006749349a31ff,
-    type: 3}
-  m_PrefabInstance: {fileID: 1173570733}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1173570737 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 873114995, guid: 5e10b72306ce6b9499006749349a31ff,
     type: 3}
   m_PrefabInstance: {fileID: 1173570733}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173570734}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 284b44292ab47b6469c3e99eda90e696, type: 3}

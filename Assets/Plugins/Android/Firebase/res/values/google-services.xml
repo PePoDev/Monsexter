@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
-  <string name="firebase_database_url" translatable="false">https://monsexter.firebaseio.com</string>
-  <string name="gcm_defaultSenderId" translatable="false">891583039017</string>
-  <string name="google_storage_bucket" translatable="false">monsexter.appspot.com</string>
-  <string name="project_id" translatable="false">monsexter</string>
-  <string name="google_api_key" translatable="false">AIzaSyAKNO1cQZBsz5YgIqTjJf90IcnC-enSwsI</string>
-  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAKNO1cQZBsz5YgIqTjJf90IcnC-enSwsI</string>
-  <string name="google_app_id" translatable="false">1:891583039017:android:423c98cae951c5bd</string>
-  <string name="default_web_client_id" translatable="false">891583039017-4ck35p2ujakuhv6hjea3d8emmhq4dm9i.apps.googleusercontent.com</string>
+  <string name="firebase_database_url" translatable="false">https://monsexter-3b9e3.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">492516508088</string>
+  <string name="google_storage_bucket" translatable="false">monsexter-3b9e3.appspot.com</string>
+  <string name="project_id" translatable="false">monsexter-3b9e3</string>
+  <string name="google_api_key" translatable="false">AIzaSyB4TyaNSZq-Oem5kfvkBhOBWBQcVWaJVII</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyB4TyaNSZq-Oem5kfvkBhOBWBQcVWaJVII</string>
+  <string name="google_app_id" translatable="false">1:492516508088:android:423c98cae951c5bd</string>
+  <string name="default_web_client_id" translatable="false">492516508088-4ng8d6f1h0193ol7cb1cssbfc6fg5ej2.apps.googleusercontent.com</string>
 </resources>

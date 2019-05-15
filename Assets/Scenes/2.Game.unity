@@ -1252,22 +1252,22 @@ MonoBehaviour:
     - {fileID: 4900000, guid: 90519c29c783d654cb79ff8739e8fc09, type: 3}
     - {fileID: 4900000, guid: e7e879ed853da7a4aade356fe3db158d, type: 3}
   - text:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 4900000, guid: 58a1f27ede70fd540afbc41a8eb68194, type: 3}
+    - {fileID: 4900000, guid: 52861fb1f6bb4b2458562076f35f6314, type: 3}
+    - {fileID: 4900000, guid: 9aa83f64b1db7844f925d16ac375ec19, type: 3}
+    - {fileID: 4900000, guid: 60588937da00a2c458fc399eeb5e43c4, type: 3}
+    - {fileID: 4900000, guid: 3348116754a5e0c429202fe1e41d15e8, type: 3}
+    - {fileID: 4900000, guid: 5fb43d21386aff741969c0b68de14505, type: 3}
+    - {fileID: 4900000, guid: 1a04ad0c1028c544996a4ba87bc65269, type: 3}
     - {fileID: 0}
   - text:
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 4900000, guid: 715169bad570870439795dc01c736109, type: 3}
+    - {fileID: 4900000, guid: 7411afb4483b24640870bd9f8c6706c7, type: 3}
     - {fileID: 4900000, guid: 14e540542bc465248b4571f6e5aa2725, type: 3}
     - {fileID: 4900000, guid: 53e9efc909ad6e84c9cc3229fdd9408c, type: 3}
     - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 4900000, guid: 6db5d0e8e00e41749ac7b489599a5ffb, type: 3}
+    - {fileID: 4900000, guid: d44701d1dd9b0154aa9be55c4229b534, type: 3}
     - {fileID: 4900000, guid: 080f44da1e43fbe46b59c1effc61ff0e, type: 3}
   LoadingComponent: {fileID: 6123292353439154605}
   TimeUpObject: {fileID: 547486324}
@@ -2934,6 +2934,18 @@ MonoBehaviour:
   - FavParams: 0
     FavString: []
     list:
+    - {fileID: 152299058}
+    ActiveGameObject: {fileID: 152299058}
+    GUIDsList: []
+    GUIDsActiveGameObject: 
+    PATHsList: []
+    PATHsActiveGameObject: 
+    InstanceID: 0
+    wasInit: 0
+    CashedBool: 0
+  - FavParams: 0
+    FavString: []
+    list:
     - {fileID: 1675530848}
     ActiveGameObject: {fileID: 1675530848}
     GUIDsList: []
@@ -3080,18 +3092,6 @@ MonoBehaviour:
     list:
     - {fileID: 129882144}
     ActiveGameObject: {fileID: 129882144}
-    GUIDsList: []
-    GUIDsActiveGameObject: 
-    PATHsList: []
-    PATHsActiveGameObject: 
-    InstanceID: 0
-    wasInit: 0
-    CashedBool: 0
-  - FavParams: 0
-    FavString: []
-    list:
-    - {fileID: 152299058}
-    ActiveGameObject: {fileID: 152299058}
     GUIDsList: []
     GUIDsActiveGameObject: 
     PATHsList: []

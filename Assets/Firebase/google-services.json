@@ -1,42 +1,35 @@
 {
   "project_info": {
-    "project_number": "891583039017",
-    "firebase_url": "https://monsexter.firebaseio.com",
-    "project_id": "monsexter",
-    "storage_bucket": "monsexter.appspot.com"
+    "project_number": "492516508088",
+    "firebase_url": "https://monsexter-3b9e3.firebaseio.com",
+    "project_id": "monsexter-3b9e3",
+    "storage_bucket": "monsexter-3b9e3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:891583039017:android:423c98cae951c5bd",
+        "mobilesdk_app_id": "1:492516508088:android:423c98cae951c5bd",
         "android_client_info": {
           "package_name": "dev.pepo.monsexter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "891583039017-4ck35p2ujakuhv6hjea3d8emmhq4dm9i.apps.googleusercontent.com",
+          "client_id": "492516508088-4ng8d6f1h0193ol7cb1cssbfc6fg5ej2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAKNO1cQZBsz5YgIqTjJf90IcnC-enSwsI"
+          "current_key": "AIzaSyB4TyaNSZq-Oem5kfvkBhOBWBQcVWaJVII"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "891583039017-4ck35p2ujakuhv6hjea3d8emmhq4dm9i.apps.googleusercontent.com",
+              "client_id": "492516508088-4ng8d6f1h0193ol7cb1cssbfc6fg5ej2.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "891583039017-ffchvnl96s3rhjq0k2p7q2scf0k2ipdo.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "dev.pepo.monsexter"
-              }
             }
           ]
         }
